@@ -8,6 +8,19 @@ app.use(express.json());
 
 let mockDB: any = {}; // Database tạm thời
 
+app.post('/login-or-create-parent', (req, res) => {
+  const { phone } = req.body;
+  if (!phone) return res.status(400).send('Missing phone');
+
+  if (!mockDB[phone]) {
+    mockDB[phone] = {
+      children: [],
+    };
+  }
+
+  res.status(200).json(mockDB[phone]);
+});
+
 app.post('/add-child', (req, res) => {
   const { phone, child } = req.body;
   if (!phone || !child) return res.status(400).send('Missing phone or child');
